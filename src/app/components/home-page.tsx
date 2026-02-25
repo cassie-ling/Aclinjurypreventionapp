@@ -7,6 +7,7 @@ interface HomePageProps {
   onSelectRoutine: (routine: Routine) => void;
 }
 
+//testing if github works :)
 export function HomePage({ onSelectRoutine }: HomePageProps) {
   const { favorites, totalMinutes, badges } = useApp();
   const earnedBadges = badges.filter((b) => b.earned);
