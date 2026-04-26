@@ -8,7 +8,7 @@ interface HomePageProps {
 }
 
 export function HomePage({ onSelectRoutine }: HomePageProps) {
-  const { favorites, totalMinutes, badges } = useApp();
+  const { favorites, totalMinutes, badges} = useApp();
   const earnedBadges = badges.filter((b) => b.earned);
   const favRoutines = routines.filter((r) => favorites.includes(r.id));
 
@@ -29,18 +29,7 @@ export function HomePage({ onSelectRoutine }: HomePageProps) {
           </div>
           <p className="text-2xl" style={{ fontWeight: 700 }}>{totalMinutes}</p>
         </div>
-        <div className="bg-card rounded-xl p-4 border border-border shadow-sm">
-          <div className="flex items-center gap-2 mb-1">
-            <Trophy className="w-4 h-4 text-accent" />
-            <span className="text-[13px] text-muted-foreground">Badges Earned</span>
-          </div>
-          <p className="text-2xl" style={{ fontWeight: 700 }}>
-            {earnedBadges.length}
-            <span className="text-[14px] text-muted-foreground" style={{ fontWeight: 400 }}>
-              {" "}/ {badges.length}
-            </span>
-          </p>
-        </div>
+        {/*  */}
       </div>
 
       {/* Latest Badge */}

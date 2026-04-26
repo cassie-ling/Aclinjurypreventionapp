@@ -104,7 +104,7 @@ export function RoutineDetail({ routine, onBack, onStart }: RoutineDetailProps) 
       </div>
 
       {/* Start Button */}
-      <div className="fixed bottom-20 left-0 right-0 px-5 pb-4 pt-2 bg-gradient-to-t from-background via-background to-transparent">
+      <div className="fixed bottom-0 left-0 right-0 px-5 pb-4 pt-2 bg-gradient-to-t from-background via-background to-transparent">
         <button
           onClick={onStart}
           className="w-full bg-primary text-primary-foreground py-4 rounded-2xl flex items-center justify-center gap-2 shadow-lg"

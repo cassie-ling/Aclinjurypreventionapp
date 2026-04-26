@@ -81,12 +81,12 @@ export function RoutineCard({ routine, onTap, compact }: RoutineCardProps) {
           />
         </button>
         <div className="absolute bottom-3 left-3 flex gap-2">
-          <span className={`px-2.5 py-0.5 rounded-full text-[12px] ${difficultyColor}`}>
+          {/* <span className={`px-2.5 py-0.5 rounded-full text-[12px] ${difficultyColor}`}>
             {routine.difficulty}
-          </span>
-          <span className="px-2.5 py-0.5 rounded-full text-[12px] bg-white/90 text-gray-700">
+          </span> */}
+          {/* <span className="px-2.5 py-0.5 rounded-full text-[12px] bg-white/90 text-gray-700">
             {routine.category}
-          </span>
+          </span> */}
         </div>
       </div>
       <div className="p-4">
