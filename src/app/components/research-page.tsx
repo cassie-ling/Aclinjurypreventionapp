@@ -65,24 +65,30 @@ export function ResearchPage() {
         <div className="space-y-3">
           {[
             {
-              title: "FIFA 11+ Warm-Up Program",
-              source: "FIFA Medical Network",
-              description: "Evidence-based warm-up program proven to reduce injuries.",
+              title: "Take the Plege: Project Play",
+              source: "Aspen Institute",
+              description: "Learn more about ACL injuries and commit to the #ACLPledge.",
+              url: "https://projectplay.org/acl-injury-prevention/main",
             },
             {
-              title: "ACL Injury Prevention in Young Athletes",
-              source: "American Academy of Pediatrics",
-              description: "Guidelines for preventing ACL injuries in youth sports.",
+              title: "Why Are So Many Teen Girls Still Tearing Their ACLs?",
+              source: "The New York Times",
+              description: "The developer of this app may or may not have cried reading this article.",
+              url: "https://www.nytimes.com/2026/02/26/magazine/acl-tear-women-girl-sports.html?unlocked_article_code=1.PVA.ArRb.EtOv1Q4H5qEH&smid=nytcore-ios-share",
             },
             {
               title: "Why Female Athletes Are More At Risk",
               source: "Sports Medicine Research",
               description: "Understanding the biomechanical factors behind ACL injury risk.",
+              url: "https://www.hopkinsmedicine.org/health/conditions-and-diseases/acl-injury-prevention-for-the-female-athlete",
             },
           ].map((resource, i) => (
-            <div
+            <a
               key={i}
-              className="bg-card rounded-xl p-4 border border-border"
+              href={resource.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-card rounded-xl p-4 border border-border block hover:bg-accent/5 transition-colors"
             >
               <div className="flex items-start justify-between gap-2">
                 <div className="flex items-start gap-3">
@@ -99,7 +105,7 @@ export function ResearchPage() {
                 </div>
                 <ExternalLink className="w-4 h-4 text-muted-foreground shrink-0 mt-1" />
               </div>
-            </div>
+            </a>
           ))}
         </div>
       </div>
