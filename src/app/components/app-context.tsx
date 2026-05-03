@@ -13,7 +13,6 @@ export interface Routine {
   title: string;
   description: string;
   duration: number; // minutes
-  difficulty: "Beginner" | "Intermediate" | "Advanced";
   category: string;
   image: string;
   exercises: Exercise[];
@@ -57,10 +56,9 @@ const defaultBadges: Badge[] = [
 export const routines: Routine[] = [
   {
     id: "r1",
-    title: "Before Practice",
-    description: "A quick 5-minute routine to activate knee stabilizers before training.",
+    title: "Before Practice - Short",
+    description: "Activate knee stabilizers before training when short you're on time.",
     duration: 5,
-    difficulty: "Beginner",
     category: "Warm-Up",
     image: "https://img.freepik.com/free-photo/pastel-pink-vignette-concrete-textured-background_53876-129734.jpg?semt=ais_hybrid&w=740&q=80",
     exercises: [
@@ -79,30 +77,45 @@ export const routines: Routine[] = [
       { id: "e13", name: "Lateral Skater Jump", duration: 20, description: "A plyometric exercise to engage hip abductors/adductors, practice landing technique, and lateral movement.", instructions: ["Start on right leg", "Bring left leg behind the right", "Push off and jump to the left", "Land of left foot", "Hold for two seconds and repeat on the left side"] },
     ],
   },
-  // {
-  //   id: "r2",
-  //   title: "ACL Power Protect",
-  //   description: "A 10-minute comprehensive routine targeting the muscles that protect your ACL during play.",
-  //   duration: 10,
-  //   difficulty: "Intermediate",
-  //   category: "Strength",
-  //   image: "https://images.unsplash.com/photo-1615912265840-0207813af92e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx0ZWVuJTIwZ2lybCUyMHNvY2NlciUyMHBsYXllciUyMHN0cmV0Y2hpbmd8ZW58MXx8fHwxNzcxOTc2MjE5fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-  //   exercises: [
-  //     { id: "e6", name: "Walking Lunges", duration: 60, description: "Step forward into a lunge, alternating legs as you walk.", instructions: ["Stand tall with hands on hips", "Step forward with right foot", "Lower until both knees are at 90 degrees", "Push off back foot to step forward", "Alternate legs continuously"] },
-  //     { id: "e7", name: "Single-Leg Romanian Deadlift", duration: 60, description: "Hinge at your hip on one leg to strengthen hamstrings.", instructions: ["Stand on your left leg", "Hinge forward at the hip", "Extend right leg behind you", "Keep back flat, reach toward floor", "Return to standing, switch sides"] },
-  //     { id: "e8", name: "Side-Lying Clamshells", duration: 45, description: "Lie on your side and open your knees like a clamshell.", instructions: ["Lie on your side, knees bent 45 degrees", "Keep feet together", "Lift top knee as high as possible", "Keep hips stacked and stable", "Lower slowly and repeat"] },
-  //     { id: "e9", name: "Wall Sits", duration: 45, description: "Press your back against a wall and hold a seated position.", instructions: ["Stand with back against a wall", "Slide down until thighs are parallel", "Keep knees at 90 degrees", "Press back flat against wall", "Hold the position"] },
-  //     { id: "e10", name: "Lateral Band Walks", duration: 45, description: "Walk sideways with a resistance band around your ankles.", instructions: ["Place band around ankles", "Bend slightly at knees and hips", "Step sideways with one foot", "Follow with the other foot", "Keep tension in the band"] },
-  //     { id: "e11", name: "Nordic Hamstring Curls", duration: 45, description: "Kneel and slowly lower your body forward using hamstring control.", instructions: ["Kneel on a soft surface", "Anchor your feet (partner or object)", "Slowly lower your body forward", "Use hamstrings to control the descent", "Push back up and repeat"] },
-  //     { id: "e12", name: "Jump Squats", duration: 45, description: "Perform a squat, then explosively jump upward.", instructions: ["Start in a squat position", "Explosively jump upward", "Land softly with bent knees", "Immediately lower into next squat", "Focus on soft, controlled landings"] },
-  //   ],
-  // },
+  {
+    id: "r2",
+    title: "Before Practice - Standard",
+    description:
+      "SportsMetrics WIPP - Medium intensity",
+    duration: 10,
+    category: "Warm-Up",
+    image: "https://images.unsplash.com/photo-1615912265840-0207813af92e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+    exercises: [
+      { id: "r2e1", name: "Heel Walk", duration: 20, description: "Warms up the front of your ankles and shins.", instructions: ["Stand tall, toes lifted off the ground", "Take small steps forward on your heels", "Keep legs mostly straight", "Walk about 10–15 feet and turn if space is tight"] },
+      { id: "r2e2", name: "Toe Walk", duration: 20, description: "Strengthens calves and steadies your ankles.", instructions: ["Rise onto the balls of both feet", "Walk forward with small quick steps", "Stay tall; avoid leaning too far forward"] },
+      { id: "r2e3", name: "Leg Swing", duration: 30, description: "Loosens the hips and gets them ready to run.", instructions: ["Hold a wall or post for balance", "Swing one leg forward and back in a comfortable range", "Keep torso quiet; motion comes from the hip", "Switch legs halfway through"] },
+      { id: "r2e4", name: "Backward Lunge", duration: 30, description: "Strengtens knee and hip extensor/flexor muscles.", instructions: ["Step back with a long stride", "Keep front knee over the ankle", "Lower back knee toward the floor", "Maintain an upright, neutral torso", "Push forward to starting position, alternate sides"] },
+      { id: "r2e5", name: "Crossbody Knee Hug", duration: 30, description: "Opens the hips and glutes for side-to-side movement.", instructions: ["Stand on one leg", "Pull opposite knee toward chest", "Guide the knee slightly across the body", "Hold briefly, release, alternate"] },
+      { id: "r2e6", name: "High Knees", duration: 20, description: "Drive knees up quickly while jogging in place.", instructions: ["Stand tall", "Drive right knee up to hip height", "Quickly switch to left knee", "Pump arms with each step", "Stay on balls of feet"] },
+      { id: "r2e7", name: "Butt Kicks", duration: 20, description: "Kick heels toward your glutes while jogging.", instructions: ["Jog in place", "Kick heels toward glutes", "Keep torso upright", "Quick, light foot contacts", "Maintain steady rhythm"] },
+      { id: "r2e8", name: "T Jumping", duration: 30, description: "Practices quick feet and soft landings in different directions.", instructions: ["Imagine a small T on the floor", "Jump forward, then lateral, then back to center", "Land softly with knees slightly bent", "Stay controlled; small hops are fine"] },
+      { id: "r2e9", name: "Jump Lunge", duration: 30, description: "A plyometric exercise to practice landing technique.", instructions: ["Keep knees over ankles", "Lunge forward with one leg, Push off front leg to jump", "Switch front leg while in the air", "Land in lunge position", "Repeat and alternate front leg"] },
+      { id: "r2e10", name: "Single Leg Lateral Pogo (R)", duration: 20, description: "A plyometric exercise to practice landing technique and lateral movement.", instructions: ["Balance on your right leg with a slightly bent knee", "Keep your hips and core steady", "Hop side to side over a line or imaginary mark", "Land softly on the ball of your foot", "Stay bouncy, minimize ground contact time for each jump"] },
+      { id: "r2e11", name: "Single Leg Lateral Pogo (L)", duration: 20, description: "A plyometric exercise to practice landing technique and lateral movement.", instructions: ["Balance on your left leg with a slightly bent knee", "Keep your hips and core steady", "Hop side to side over a line or imaginary mark", "Land softly on the ball of your foot", "Stay bouncy, minimize ground contact time for each jump"] },
+      { id: "r2e12", name: "Broad Jumps", duration: 30, description: "Jump forward for maximum distance.", instructions: ["Start in athletic stance", "Swing arms and jump forward", "Land softly on both feet", "Absorb with bent knees", "Walk back and repeat"] },
+      { id: "r2e13", name: "Lateral Skater Jump", duration: 30, description: "A plyometric exercise to engage hip abductors/adductors, practice landing technique, and lateral movement.", instructions: ["Start on right leg", "Bring left leg behind the right", "Push off and jump to the left", "Land of left foot", "Hold for two seconds and repeat on the left side"] },
+      { id: "r2e14", name: "Heel Raise (R)", duration: 20, description: "Strengthens the ankle plantar flexors (calf muscle) and improves balance.", instructions: ["Balance on right foot with knee straight", "Rise up onto the ball of your foot", "Pause briefly at the top", "Lower your heel slowly with control"] },
+      { id: "r2e15", name: "Heel Raise (L)", duration: 20, description: "Strengthens the ankle plantar flexors (calf muscle) and improves balance.", instructions: ["Balance on left foot with knee straight", "Rise up onto the ball of your foot", "Pause briefly at the top", "Lower your heel slowly with control"] },
+      { id: "r2e16", name: "Bird Dips (R)", duration: 20, description: "Builds balance and knee control on one leg.", instructions: ["Stand on your right leg, soft knee", "Hinge slightly at the hip with a controlled dip", "Return to tall posture", "Use a fingertip touch on a wall if needed"] },
+      { id: "r2e17", name: "Bird Dips (L)", duration: 20, description: "Builds balance and knee control on one leg.", instructions: ["Stand on your left leg, soft knee", "Hinge slightly at the hip with a controlled dip", "Return to tall posture", "Use a fingertip touch on a wall if needed"] },
+      { id: "r2e18", name: "Squat Hold", duration: 30, description: "Builds leg strength while you hold a squat.", instructions: ["Feet shoulder-width, toes slightly out", "Lower into a squat you can hold", "Keep chest up and knees over toes", "Breathe steadily"] },
+      { id: "r2e19", name: "Push Up", duration: 30, description: "Strengthens chest, arms, and core.", instructions: ["Hands under shoulders, body straight", "Lower chest toward the floor", "Press back up", "Modify on knees if needed"] },
+      { id: "r2e20", name: "Side Plank (R)", duration: 20, description: "Lateral core stability.", instructions: ["Lie on right side", "Prop up on right forearm", "Lift hips off ground", "Keep body in line", "Hold steady"] },
+      { id: "r2e21", name: "Side Plank (L)", duration: 20, description: "Lateral core stability.", instructions: ["Lie on left side", "Prop up on left forearm", "Lift hips off ground", "Keep body in line", "Hold steady"] },
+      { id: "r2e22", name: "Quick Feet Forward/Backward", duration: 30, description: "Trains quick feet for changing direction.", instructions: ["Stand straddling a line or crack", "Rapidly tap feet front and back over the line", "Stay low in an athletic stance", "Light, quick feet"] },
+      { id: "r2e23", name: "Lateral Shuffle", duration: 30, description: "Shuffle quickly side to side in an athletic stance.", instructions: ["Start in athletic stance", "Shuffle quickly to the right", "Stay low with bent knees", "Shuffle back to the left", "Keep hips low throughout"] },
+    ],
+  },
   {
     id: "r3",
     title: "Landing & Balance Focus",
     description: "Train proper landing mechanics and balance — key skills for preventing ACL injuries on the field.",
     duration: 10,
-    difficulty: "Intermediate",
     category: "Balance",
     image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRP459TeUFcB-o3pvpkLB4_q2Fit5WAkHV9kQ&s",
     exercises: [
@@ -119,7 +132,6 @@ export const routines: Routine[] = [
     title: "Full Prevention Circuit",
     description: "A complete 20-minute ACL prevention circuit covering strength, balance, and plyometrics.",
     duration: 20,
-    difficulty: "Advanced",
     category: "Full Circuit",
     image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqJ3U8BFFcbJunea2PG0PpiFm3CqUephj7QA&s",
     exercises: [
@@ -140,7 +152,6 @@ export const routines: Routine[] = [
     title: "Pre-Game Knee Prep",
     description: "Quick activation routine designed for right before a game or scrimmage.",
     duration: 5,
-    difficulty: "Beginner",
     category: "Warm-Up",
     image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTlM5JjS4rlHD7i-8lcpwTAK15mP3uPr5mmwQ&s",
     exercises: [
@@ -156,7 +167,6 @@ export const routines: Routine[] = [
     title: "Hamstring & Glute Builder",
     description: "Focus on the posterior chain — the key muscle group that protects your ACL.",
     duration: 10,
-    difficulty: "Intermediate",
     category: "Strength",
     image: "https://hawthorne-s3-bucket.s3.us-east-2.amazonaws.com/2jl9ex48t85ywi59o5pp5r7pggut",
     exercises: [
@@ -173,7 +183,6 @@ export const routines: Routine[] = [
     title: "Core & Stability Session",
     description: "Build the core stability essential for proper knee alignment and ACL protection.",
     duration: 10,
-    difficulty: "Beginner",
     category: "Core",
     image: "https://img.spoonflower.com/c/11447083/p/f/m/D1I4DvsJ1MBD0X7PS16bsAB6WDcCqw4tsNvCCBJovrVU7f88_KE6/Ballet%20Slipper%20Cross%20hatch.jpg",
     exercises: [
@@ -190,7 +199,6 @@ export const routines: Routine[] = [
     title: "Plyometric Power",
     description: "Build explosive strength and train safe landing mechanics to protect your knees.",
     duration: 20,
-    difficulty: "Advanced",
     category: "Plyometrics",
     image: "https://www.armadilloclay.com/uploads/5/1/2/8/51288343/s408914246142448825_p3487_i1_w633.jpeg",
     exercises: [

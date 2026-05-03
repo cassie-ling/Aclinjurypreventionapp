@@ -12,13 +12,6 @@ export function RoutineDetail({ routine, onBack, onStart }: RoutineDetailProps) 
   const { toggleFavorite, isFavorite } = useApp();
   const fav = isFavorite(routine.id);
 
-  const difficultyColor =
-    routine.difficulty === "Beginner"
-      ? "bg-green-100 text-green-700"
-      : routine.difficulty === "Intermediate"
-      ? "bg-amber-100 text-amber-700"
-      : "bg-red-100 text-red-700";
-
   return (
     <div className="pb-24">
       {/* Hero Image */}
@@ -31,17 +24,17 @@ export function RoutineDetail({ routine, onBack, onStart }: RoutineDetailProps) 
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
         <button
           onClick={onBack}
-          className="absolute top-4 left-4 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-md"
+          className="absolute top-4 left-4 w-10 h-10 bg-card/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-md"
         >
           <ChevronLeft className="w-5 h-5" />
         </button>
         <button
           onClick={() => toggleFavorite(routine.id)}
-          className="absolute top-4 right-4 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-md"
+          className="absolute top-4 right-4 w-10 h-10 bg-card/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-md"
         >
           <Heart
             className={`w-5 h-5 ${
-              fav ? "fill-primary text-primary" : "text-gray-500"
+              fav ? "fill-primary text-primary" : "text-muted-foreground"
             }`}
           />
         </button>
@@ -51,9 +44,6 @@ export function RoutineDetail({ routine, onBack, onStart }: RoutineDetailProps) 
       <div className="px-5 -mt-6 relative">
         <div className="bg-card rounded-2xl p-5 border border-border shadow-sm">
           <div className="flex gap-2 mb-3">
-            <span className={`px-2.5 py-0.5 rounded-full text-[12px] ${difficultyColor}`}>
-              {routine.difficulty}
-            </span>
             <span className="px-2.5 py-0.5 rounded-full text-[12px] bg-muted text-muted-foreground">
               {routine.category}
             </span>

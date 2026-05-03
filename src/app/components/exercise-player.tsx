@@ -7,7 +7,7 @@ interface ExercisePlayerProps {
   routine: Routine;
   onClose: () => void;
 }
-// testing!
+
 export function ExercisePlayer({ routine, onClose }: ExercisePlayerProps) {
   const { addMinutes, markRoutineCompleted } = useApp();
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -75,9 +75,9 @@ export function ExercisePlayer({ routine, onClose }: ExercisePlayerProps) {
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ type: "spring", duration: 0.6 }}
-          className="w-24 h-24 rounded-full bg-accent flex items-center justify-center mb-6"
+          className="w-24 h-24 rounded-full bg-primary flex items-center justify-center mb-6"
         >
-          <Check className="w-12 h-12 text-white" />
+          <Check className="w-12 h-12 text-primary-foreground" />
         </motion.div>
         <motion.div
           initial={{ opacity: 0, y: 20 }}

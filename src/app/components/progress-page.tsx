@@ -164,7 +164,7 @@ export function ProgressPage() {
                 <div>
                   <p className="text-[14px]" style={{ fontWeight: 500 }}>{routine.title}</p>
                   <p className="text-[13px] text-muted-foreground">
-                    {routine.duration} min · {routine.difficulty}
+                    {routine.duration} min · {routine.category}
                   </p>
                 </div>
               </div>

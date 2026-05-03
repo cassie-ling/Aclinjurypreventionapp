@@ -8,13 +8,11 @@ interface ExercisesPageProps {
 }
 
 const durations = ["All", "5 min", "10 min", "20 min"] as const;
-const difficulties = ["All", "Beginner", "Intermediate", "Advanced"] as const;
 const categories = ["All", "Warm-Up", "Strength", "Balance", "Core", "Plyometrics", "Full Circuit"] as const;
 
 export function ExercisesPage({ onSelectRoutine }: ExercisesPageProps) {
   const [search, setSearch] = useState("");
   const [selectedDuration, setSelectedDuration] = useState<string>("All");
-  const [selectedDifficulty, setSelectedDifficulty] = useState<string>("All");
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [showFilters, setShowFilters] = useState(false);
 
@@ -26,11 +24,9 @@ export function ExercisesPage({ onSelectRoutine }: ExercisesPageProps) {
     const matchesDuration =
       selectedDuration === "All" ||
       `${r.duration} min` === selectedDuration;
-    const matchesDifficulty =
-      selectedDifficulty === "All" || r.difficulty === selectedDifficulty;
     const matchesCategory =
       selectedCategory === "All" || r.category === selectedCategory;
-    return matchesSearch && matchesDuration && matchesDifficulty && matchesCategory;
+    return matchesSearch && matchesDuration && matchesCategory;
   });
 
   return (
@@ -77,24 +73,6 @@ export function ExercisesPage({ onSelectRoutine }: ExercisesPageProps) {
                   onClick={() => setSelectedDuration(d)}
                   className={`px-3 py-1.5 rounded-full text-[13px] border transition-colors ${
                     selectedDuration === d
-                      ? "bg-primary text-primary-foreground border-primary"
-                      : "bg-card border-border text-foreground"
-                  }`}
-                >
-                  {d}
-                </button>
-              ))}
-            </div>
-          </div>
-          <div>
-            <p className="text-[13px] text-muted-foreground mb-1.5">Difficulty</p>
-            <div className="flex gap-2 flex-wrap">
-              {difficulties.map((d) => (
-                <button
-                  key={d}
-                  onClick={() => setSelectedDifficulty(d)}
-                  className={`px-3 py-1.5 rounded-full text-[13px] border transition-colors ${
-                    selectedDifficulty === d
                       ? "bg-primary text-primary-foreground border-primary"
                       : "bg-card border-border text-foreground"
                   }`}
@@ -168,7 +146,6 @@ export function ExercisesPage({ onSelectRoutine }: ExercisesPageProps) {
               onClick={() => {
                 setSearch("");
                 setSelectedDuration("All");
-                setSelectedDifficulty("All");
                 setSelectedCategory("All");
               }}
               className="text-primary mt-2 text-[14px]"
