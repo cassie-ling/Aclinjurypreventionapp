@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { X, Play, Pause, SkipForward, Check, ChevronLeft } from "lucide-react";
 import { useApp, type Routine } from "./app-context";
 import { motion } from "motion/react";
@@ -7,7 +7,7 @@ interface ExercisePlayerProps {
   routine: Routine;
   onClose: () => void;
 }
-
+// testing!
 export function ExercisePlayer({ routine, onClose }: ExercisePlayerProps) {
   const { addMinutes, markRoutineCompleted } = useApp();
   const [currentIndex, setCurrentIndex] = useState(0);
