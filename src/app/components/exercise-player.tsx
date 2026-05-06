@@ -18,6 +18,36 @@ export function ExercisePlayer({ routine, onClose }: ExercisePlayerProps) {
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const exercise = routine.exercises[currentIndex];
 
+  const isRestPhase = exercise.name.trim().toLowerCase() === "rest";
+
+  const normalizeExerciseName = (name: string) => {
+    // Unify right/left set variants so sets don’t count as separate exercises.
+    return name
+      .replace(/\s*\((Right|Left)\)\s*$/i, "")
+      .trim();
+  };
+
+  const groupKeysInOrder = routine.exercises.reduce<string[]>((acc, e) => {
+    const isRest = e.name.trim().toLowerCase() === "rest";
+    if (isRest) return acc;
+    const key = normalizeExerciseName(e.name);
+    if (!key) return acc;
+    if (!acc.includes(key)) acc.push(key);
+    return acc;
+  }, []);
+
+  const currentGroupKey = (() => {
+    if (!isRestPhase) return normalizeExerciseName(exercise.name);
+    for (let i = currentIndex - 1; i >= 0; i--) {
+      const prev = routine.exercises[i];
+      if (prev.name.trim().toLowerCase() !== "rest") return normalizeExerciseName(prev.name);
+    }
+    return normalizeExerciseName(exercise.name);
+  })();
+
+  const currentStep = Math.max(1, groupKeysInOrder.indexOf(currentGroupKey) + 1);
+  const totalSteps = Math.max(1, groupKeysInOrder.length);
+
   const totalExerciseTime = routine.exercises.reduce((sum, e) => sum + e.duration, 0);
   const elapsedExerciseTime = routine.exercises
     .slice(0, currentIndex)
@@ -111,7 +141,7 @@ export function ExercisePlayer({ routine, onClose }: ExercisePlayerProps) {
         </button>
         <div className="text-center">
           <p className="text-[13px] text-muted-foreground">
-            {currentIndex + 1} of {routine.exercises.length}
+            {currentStep} of {totalSteps}
           </p>
         </div>
         <button onClick={onClose} className="p-2 -mr-2">
@@ -137,10 +167,12 @@ export function ExercisePlayer({ routine, onClose }: ExercisePlayerProps) {
           transition={{ duration: 0.3 }}
           className="w-full max-w-sm text-center"
         >
-          <h2 className="mb-2">{exercise.name}</h2>
-          <p className="text-muted-foreground text-[14px] mb-8">
-            {exercise.description}
-          </p>
+          <h2 className="mb-2">{isRestPhase ? "Rest" : exercise.name}</h2>
+          {!!exercise.description && (
+            <p className="text-muted-foreground text-[14px] mb-6">
+              {exercise.description}
+            </p>
+          )}
 
           {/* Timer Circle */}
           <div className="relative w-48 h-48 mx-auto mb-8">
@@ -175,13 +207,26 @@ export function ExercisePlayer({ routine, onClose }: ExercisePlayerProps) {
           </div>
 
           {/* Instructions */}
-          <div className="bg-card rounded-xl p-4 text-left border border-border">
-            <p className="text-[13px] text-muted-foreground mb-2">Instructions</p>
+          <div className="bg-card rounded-xl p-4 text-left border border-border max-h-[38vh] overflow-y-auto">
+            <p className="text-[13px] text-muted-foreground mb-2">
+              {isRestPhase ? "Up next" : "Instructions"}
+            </p>
             <ul className="space-y-1.5">
               {exercise.instructions.map((instruction, i) => (
                 <li key={i} className="flex items-start gap-2 text-[14px]">
-                  <span className="text-primary mt-0.5 shrink-0">•</span>
-                  <span>{instruction}</span>
+                  {!isRestPhase && <span className="text-primary mt-0.5 shrink-0">•</span>}
+                  <span>
+                    {(() => {
+                      const match = instruction.match(/^((?:Level)\s+\d+)\s*:\s*(.*)$/);
+                      if (!match) return instruction;
+                      const [, levelPrefix, rest] = match;
+                      return (
+                        <>
+                          <span className="font-semibold">{levelPrefix}:</span> {rest}
+                        </>
+                      );
+                    })()}
+                  </span>
                 </li>
               ))}
             </ul>
@@ -190,7 +235,7 @@ export function ExercisePlayer({ routine, onClose }: ExercisePlayerProps) {
       </div>
 
       {/* Controls */}
-      <div className="px-6 pb-8 pt-4">
+      <div className="px-6 pb-8 pt-4 border-t border-border bg-background">
         <div className="flex items-center justify-center gap-6">
           <button
             onClick={goToNext}

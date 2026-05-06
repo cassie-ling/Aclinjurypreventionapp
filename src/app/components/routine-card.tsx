@@ -10,6 +10,9 @@ interface RoutineCardProps {
 export function RoutineCard({ routine, onTap, compact }: RoutineCardProps) {
   const { toggleFavorite, isFavorite } = useApp();
   const fav = isFavorite(routine.id);
+  const visibleExerciseCount = routine.exercises.filter(
+    (exercise) => exercise.name.trim().toLowerCase() !== "rest"
+  ).length;
 
   if (compact) {
     return (
@@ -72,7 +75,7 @@ export function RoutineCard({ routine, onTap, compact }: RoutineCardProps) {
           </div>
           <div className="flex items-center gap-1.5">
             <Zap className="w-4 h-4 shrink-0" />
-            <span className="text-[13px]">{routine.exercises.length} exercises</span>
+            <span className="text-[13px]">{visibleExerciseCount} exercises</span>
           </div>
         </div>
       </button>

@@ -11,6 +11,9 @@ interface RoutineDetailProps {
 export function RoutineDetail({ routine, onBack, onStart }: RoutineDetailProps) {
   const { toggleFavorite, isFavorite } = useApp();
   const fav = isFavorite(routine.id);
+  const visibleExercises = routine.exercises.filter(
+    (exercise) => exercise.name.trim().toLowerCase() !== "rest"
+  );
 
   return (
     <div className="pb-24">
@@ -59,7 +62,7 @@ export function RoutineDetail({ routine, onBack, onStart }: RoutineDetailProps) 
             </div>
             <div className="flex items-center gap-1.5">
               <Zap className="w-4 h-4" />
-              <span className="text-[14px]">{routine.exercises.length} exercises</span>
+              <span className="text-[14px]">{visibleExercises.length} exercises</span>
             </div>
           </div>
         </div>
@@ -69,7 +72,7 @@ export function RoutineDetail({ routine, onBack, onStart }: RoutineDetailProps) 
       <div className="px-5 mt-6">
         <h3 className="mb-3">Exercises</h3>
         <div className="space-y-2">
-          {routine.exercises.map((exercise, index) => (
+          {visibleExercises.map((exercise, index) => (
             <div
               key={exercise.id}
               className="bg-card rounded-xl p-4 border border-border flex items-start gap-3"
