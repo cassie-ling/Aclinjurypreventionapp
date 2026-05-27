@@ -41,7 +41,7 @@ function AppContent() {
   };
 
   return (
-    <div className="w-full min-h-screen max-w-md mx-auto bg-background relative flex flex-col">
+    <motion.div className="w-full min-h-screen max-w-md bg-background relative flex flex-col shadow-xl border-x border-border overflow-x-hidden">
       {/* Exercise Player (fullscreen overlay) */}
       <AnimatePresence>
         {isPlaying && selectedRoutine && (
@@ -112,14 +112,16 @@ function AppContent() {
           </div>
         </>
       ) : null}
-    </div>
+    </motion.div>
   );
 }
 
 export default function App() {
   return (
-    <AppProvider>
-      <AppContent />
-    </AppProvider>
+    <motion.div className="min-h-screen w-full flex justify-center bg-zinc-200/80">
+      <AppProvider>
+        <AppContent />
+      </AppProvider>
+    </motion.div>
   );
 }

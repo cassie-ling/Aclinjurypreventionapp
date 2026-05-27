@@ -100,7 +100,8 @@ export function ExercisePlayer({ routine, onClose }: ExercisePlayerProps) {
 
   if (isComplete) {
     return (
-      <div className="fixed inset-0 z-50 bg-background flex flex-col items-center justify-center p-6 text-center">
+      <motion.div className="fixed inset-0 z-50 flex justify-center bg-zinc-200/80">
+        <motion.div className="flex h-full w-full max-w-md flex-col items-center justify-center bg-background p-6 text-center shadow-xl overflow-hidden">
         <motion.div
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
@@ -128,12 +129,14 @@ export function ExercisePlayer({ routine, onClose }: ExercisePlayerProps) {
             Done
           </button>
         </motion.div>
-      </div>
+        </motion.div>
+      </motion.div>
     );
   }
 
   return (
-    <div className="fixed inset-0 z-50 bg-background flex flex-col">
+    <motion.div className="fixed inset-0 z-50 flex justify-center bg-zinc-200/80">
+      <motion.div className="flex h-full w-full max-w-md flex-col bg-background shadow-xl overflow-hidden">
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-border">
         <button onClick={onClose} className="p-2 -ml-2">
@@ -256,6 +259,7 @@ export function ExercisePlayer({ routine, onClose }: ExercisePlayerProps) {
           <div className="w-12" /> {/* Spacer for balance */}
         </div>
       </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }

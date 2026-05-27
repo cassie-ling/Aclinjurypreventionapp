@@ -96,8 +96,8 @@ export function RoutineDetail({ routine, onBack, onStart }: RoutineDetailProps) 
         </div>
       </div>
 
-      {/* Start Button */}
-      <div className="fixed bottom-0 left-0 right-0 px-5 pb-4 pt-2 bg-gradient-to-t from-background via-background to-transparent">
+      {/* DEMO: fixed bar matches max-w-md phone column */}
+      <div className="fixed bottom-0 left-1/2 z-40 w-full max-w-md -translate-x-1/2 px-5 pb-4 pt-2 bg-gradient-to-t from-background via-background to-transparent">
         <button
           onClick={onStart}
           className="w-full bg-primary text-primary-foreground py-4 rounded-2xl flex items-center justify-center gap-2 shadow-lg"

@@ -4,6 +4,7 @@
 
 body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  overflow-x: hidden; /* DEMO: clip horizontal bleed during screen recording */
 }
 
 .no-scrollbar::-webkit-scrollbar {

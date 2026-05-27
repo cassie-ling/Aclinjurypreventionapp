@@ -71,7 +71,7 @@ export function HomePage({ onSelectRoutine }: HomePageProps) {
           <div className="bg-card rounded-xl p-8 border border-border text-center">
             <p className="text-4xl mb-3">💖</p>
             <p className="text-muted-foreground text-[14px]">
-              No favorites yet! Head to the Exercises tab and tap the heart on routines you love.
+              No favorites yet! Head to the Exercises tab and tap the heart on routines you want easy access to.
             </p>
           </div>
         ) : (

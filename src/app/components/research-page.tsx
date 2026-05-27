@@ -38,12 +38,12 @@ export function ResearchPage() {
               fact: "About 70% of ACL injuries are non-contact — they happen during landing, cutting, or pivoting.",
             },
             {
-              stat: "50%",
-              fact: "Prevention programs like this one can reduce ACL injury risk by up to 50% when done consistently.",
+              stat: "88%",
+              fact: "Prevention programs like these ones can reduce ACL injury risk by up to 88% when done consistently.",
             },
             {
-              stat: "6-9 mo",
-              fact: "Recovery from ACL surgery typically takes 6 to 9 months — prevention is always better than rehab.",
+              stat: "1 yr",
+              fact: "Recovery from ACL surgery typically takes 9 to 12 months — prevention is always better than rehab.",
             },
           ].map((item, i) => (
             <div
