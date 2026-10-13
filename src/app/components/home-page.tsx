@@ -15,7 +15,7 @@ export function HomePage({ onSelectRoutine }: HomePageProps) {
   return (
     <div className="pb-6">
       {/* Header */}
-      <div className="px-5 pt-6 pb-4">
+      <div className="pl-5 pr-16 pt-6 pb-4">
         <p className="text-muted-foreground text-[14px]">Dashboard</p>
         <h1>Protect Her Play</h1>
       </div>

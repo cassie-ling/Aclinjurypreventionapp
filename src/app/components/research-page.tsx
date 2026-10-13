@@ -4,7 +4,7 @@ export function ResearchPage() {
   return (
     <div className="pb-6">
       {/* Header */}
-      <div className="px-5 pt-6 pb-4">
+      <div className="pl-5 pr-16 pt-6 pb-4">
         <h1>Research & Resources</h1>
         <p className="text-muted-foreground text-[14px] mt-1">
           Learn about ACL health and injury prevention

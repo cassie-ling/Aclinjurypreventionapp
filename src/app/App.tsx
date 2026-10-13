@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { Home, Dumbbell, BookOpen, BarChart3 } from "lucide-react";
 import { AppProvider, type Routine } from "./components/app-context";
+import { AuthProvider, useAuth } from "./components/auth-context";
+import { AuthPage } from "./components/auth-page";
 import { HomePage } from "./components/home-page";
 import { ExercisesPage } from "./components/exercises-page";
 import { ResearchPage } from "./components/research-page";
+import { PersonalInfoPage, ProfileSetup, AccountMenu } from "./components/profile-page";
 import { ProgressPage } from "./components/progress-page";
 import { RoutineDetail } from "./components/routine-detail";
 import { ExercisePlayer } from "./components/exercise-player";
@@ -22,6 +25,7 @@ function AppContent() {
   const [activeTab, setActiveTab] = useState<Tab>("home");
   const [selectedRoutine, setSelectedRoutine] = useState<Routine | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
 
   const handleSelectRoutine = (routine: Routine) => {
     setSelectedRoutine(routine);
@@ -41,7 +45,7 @@ function AppContent() {
   };
 
   return (
-    <motion.div className="w-full min-h-screen max-w-md bg-background relative flex flex-col shadow-xl border-x border-border overflow-x-hidden">
+    <div className="relative flex min-h-screen flex-1 flex-col">
       {/* Exercise Player (fullscreen overlay) */}
       <AnimatePresence>
         {isPlaying && selectedRoutine && (
@@ -58,8 +62,11 @@ function AppContent() {
             onStart={handleStartRoutine}
           />
         </div>
+      ) : showProfile && !isPlaying ? (
+        <PersonalInfoPage onBack={() => setShowProfile(false)} />
       ) : !isPlaying ? (
         <>
+          <AccountMenu onOpenProfile={() => setShowProfile(true)} />
           {/* Main Content */}
           <div className="flex-1 overflow-y-auto pb-20">
             {activeTab === "home" && (
@@ -112,16 +119,45 @@ function AppContent() {
           </div>
         </>
       ) : null}
+    </div>
+  );
+}
+
+function AppShell() {
+  const { user, profile, authReady, profileReady } = useAuth();
+
+  let content: ReactNode;
+  if (!authReady || (user && !profileReady)) {
+    content = (
+      <div className="flex-1 flex items-center justify-center text-muted-foreground text-[14px]">
+        Loading…
+      </div>
+    );
+  } else if (!user) {
+    content = <AuthPage />;
+  } else if (!profile?.profileComplete) {
+    content = <ProfileSetup />;
+  } else {
+    content = (
+      <AppProvider uid={user.uid}>
+        <AppContent />
+      </AppProvider>
+    );
+  }
+
+  return (
+    <motion.div className="w-full min-h-screen max-w-md bg-background relative flex flex-col shadow-xl border-x border-border overflow-x-hidden">
+      {content}
     </motion.div>
   );
 }
 
 export default function App() {
   return (
-    <motion.div className="min-h-screen w-full flex justify-center bg-zinc-200/80">
-      <AppProvider>
-        <AppContent />
-      </AppProvider>
-    </motion.div>
+    <AuthProvider>
+      <motion.div className="min-h-screen w-full flex justify-center bg-zinc-200/80">
+        <AppShell />
+      </motion.div>
+    </AuthProvider>
   );
 }

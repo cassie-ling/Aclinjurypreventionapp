@@ -1,4 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { db } from "../../lib/firebase";
+import { authErrorMessage } from "../../lib/profile";
 
 export interface Exercise {
   id: string;
@@ -46,6 +49,7 @@ interface AppContextType extends AppState {
   addMinutes: (minutes: number) => void;
   markRoutineCompleted: (routineId: string) => void;
   routines: Routine[];
+  syncError: string | null;
 }
 
 const defaultBadges: Badge[] = [
@@ -471,11 +475,7 @@ export const routines: Routine[] = [
 
 const STORAGE_KEY = "protect-her-play-state";
 
-function loadState(): AppState {
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) return JSON.parse(stored);
-  } catch {}
+function emptyState(): AppState {
   return {
     favorites: [],
     totalMinutes: 0,
@@ -484,31 +484,141 @@ function loadState(): AppState {
   };
 }
 
+function mergeBadges(stored: unknown): Badge[] {
+  if (!Array.isArray(stored)) return defaultBadges;
+  return defaultBadges.map((badge) => {
+    const saved = stored.find(
+      (item) =>
+        typeof item === "object" &&
+        item !== null &&
+        "id" in item &&
+        (item as { id?: string }).id === badge.id
+    ) as { earned?: boolean } | undefined;
+    return saved ? { ...badge, earned: saved.earned === true } : badge;
+  });
+}
+
+function loadLocalState(): AppState | null {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (!stored) return null;
+    const parsed = JSON.parse(stored) as Partial<AppState>;
+    return {
+      favorites: Array.isArray(parsed.favorites) ? parsed.favorites.map(String) : [],
+      totalMinutes: typeof parsed.totalMinutes === "number" ? parsed.totalMinutes : 0,
+      completedRoutines: Array.isArray(parsed.completedRoutines)
+        ? parsed.completedRoutines.map(String)
+        : [],
+      badges: mergeBadges(parsed.badges),
+    };
+  } catch {
+    return null;
+  }
+}
+
+function hasProgress(state: AppState) {
+  return (
+    state.totalMinutes > 0 ||
+    state.completedRoutines.length > 0 ||
+    state.favorites.length > 0 ||
+    state.badges.some((badge) => badge.earned)
+  );
+}
+
+function progressFromDoc(data: Record<string, unknown>): AppState | null {
+  const initialized =
+    data.progressInitialized === true || typeof data.totalMinutes === "number";
+  if (!initialized) return null;
+  return {
+    favorites: Array.isArray(data.favorites) ? data.favorites.map(String) : [],
+    totalMinutes: typeof data.totalMinutes === "number" ? data.totalMinutes : 0,
+    completedRoutines: Array.isArray(data.completedRoutines)
+      ? data.completedRoutines.map(String)
+      : [],
+    badges: mergeBadges(data.badges),
+  };
+}
+
 const AppContext = createContext<AppContextType | null>(null);
 
-export function AppProvider({ children }: { children: React.ReactNode }) {
-  const [state, setState] = useState<AppState>(loadState);
+export function AppProvider({
+  uid,
+  children,
+}: {
+  uid: string;
+  children: React.ReactNode;
+}) {
+  const [state, setState] = useState<AppState | null>(null);
+  const [syncError, setSyncError] = useState<string | null>(null);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-  }, [state]);
+    let cancelled = false;
+    setState(null);
+
+    (async () => {
+      const snap = await getDoc(doc(db, "users", uid));
+      const cloud = snap.exists()
+        ? progressFromDoc(snap.data() as Record<string, unknown>)
+        : null;
+      const local = loadLocalState();
+      let initial = cloud ?? emptyState();
+      if (!cloud && local && hasProgress(local)) {
+        initial = local;
+        localStorage.removeItem(STORAGE_KEY);
+      }
+      if (!cancelled) setState(initial);
+    })().catch((error) => {
+      if (!cancelled) {
+        setSyncError(authErrorMessage(error));
+        setState(loadLocalState() ?? emptyState());
+      }
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [uid]);
+
+  useEffect(() => {
+    if (!state) return;
+    const handle = setTimeout(() => {
+      setDoc(
+        doc(db, "users", uid),
+        {
+          favorites: state.favorites,
+          totalMinutes: state.totalMinutes,
+          completedRoutines: state.completedRoutines,
+          badges: state.badges,
+          progressInitialized: true,
+        },
+        { merge: true }
+      )
+        .then(() => setSyncError(null))
+        .catch((error) => setSyncError(authErrorMessage(error)));
+    }, 400);
+    return () => clearTimeout(handle);
+  }, [state, uid]);
 
   const toggleFavorite = useCallback((routineId: string) => {
-    setState((prev) => ({
-      ...prev,
-      favorites: prev.favorites.includes(routineId)
-        ? prev.favorites.filter((id) => id !== routineId)
-        : [...prev.favorites, routineId],
-    }));
+    setState((prev) => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        favorites: prev.favorites.includes(routineId)
+          ? prev.favorites.filter((id) => id !== routineId)
+          : [...prev.favorites, routineId],
+      };
+    });
   }, []);
 
   const isFavorite = useCallback(
-    (routineId: string) => state.favorites.includes(routineId),
-    [state.favorites]
+    (routineId: string) => state?.favorites.includes(routineId) ?? false,
+    [state]
   );
 
   const addMinutes = useCallback((minutes: number) => {
     setState((prev) => {
+      if (!prev) return prev;
       const newTotal = prev.totalMinutes + minutes;
       const updatedBadges = prev.badges.map((badge) => ({
         ...badge,
@@ -519,11 +629,22 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const markRoutineCompleted = useCallback((routineId: string) => {
-    setState((prev) => ({
-      ...prev,
-      completedRoutines: [...prev.completedRoutines, routineId],
-    }));
+    setState((prev) => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        completedRoutines: [...prev.completedRoutines, routineId],
+      };
+    });
   }, []);
+
+  if (!state) {
+    return (
+      <div className="flex-1 flex items-center justify-center text-muted-foreground text-[14px]">
+        Loading your progress…
+      </div>
+    );
+  }
 
   return (
     <AppContext.Provider
@@ -534,6 +655,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         addMinutes,
         markRoutineCompleted,
         routines,
+        syncError,
       }}
     >
       {children}
